@@ -1,0 +1,35 @@
+#include <opencv2/opencv.hpp>
+#include <opencv2/videoio.hpp> 
+#include <iostream>
+#include <vector>
+
+
+int main(int argc, char **argv)
+{
+    cv::Mat frame = cv::imread(argv[1]); 
+
+	cv::Scalar lower(0, 20, 30);
+	cv::Scalar upper(20, 255, 255);
+	cv::Mat kernel = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(11, 11));
+	cv::Mat hsv, skinmask, skin, hcon;
+	
+	//BGR转换到HSV
+	cv::cvtColor(frame, hsv, cv::COLOR_BGR2HSV);
+	cv::imwrite("hsv.jpg", hsv);
+	//根据肤色上下界，计算肤色模版，0表示非肤色，255表示肤色
+	cv::inRange(hsv, lower, upper, skinmask);
+	cv::imwrite("skinmask.jpg", skinmask);
+	//按照椭圆形状进行腐蚀膨胀操作去除监测肤色的outiler
+	cv::erode(skinmask,skinmask,kernel,cv::Point(-1,-1),1);
+	cv::dilate(skinmask,skinmask,kernel,cv::Point(-1,-1),1);
+	cv::imwrite("kai.jpg", skinmask);
+	//去除肤色噪点
+	cv::GaussianBlur(skinmask,skinmask,cv::Size(3,3),0);
+	//从原始图像中根据肤色模型提取肤色图像
+	cv::bitwise_and(frame,frame,skin,skinmask);
+	//水平拼接图片，为了对比
+	cv::hconcat(frame, skin, hcon);
+		
+	cv::imwrite("hcon.jpg", hcon);
+    return 0;
+}
