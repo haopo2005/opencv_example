@@ -1,0 +1,2 @@
+how to run:
+./Registration R0010087.JPG x_447_y_218.jpg y_canny.jpg t_canny.jpg 447 test.txt save.jpg
