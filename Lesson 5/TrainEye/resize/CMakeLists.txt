@@ -1,0 +1,8 @@
+project(resize_image)  
+SET(CMAKE_BUILD_TYPE "Debug") 
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+find_package(OpenCV REQUIRED)  
+add_executable(resize_image process.cpp)  
+target_link_libraries(resize_image ${OpenCV_LIBS})  
+cmake_minimum_required(VERSION 2.8)

@@ -1,0 +1,12 @@
+#!/bin/bash
+cd $1
+path=`pwd`
+echo "进入目录:" $path
+aa=0
+for files in `ls`
+do
+  temp=`expr $aa`
+  mv $files $(printf %05d.jpg $temp)
+  let "aa = $aa + 1"
+done
+

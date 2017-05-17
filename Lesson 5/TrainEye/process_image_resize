@@ -1,0 +1,12 @@
+#!/bin/bash
+cd $1
+path=`pwd`
+echo "进入目录:" $path
+aa=1
+for files in `ls`
+do
+ temp="/home/jst/share/TrainEye/03/$files"
+ echo "$temp"
+ `/home/jst/share/TrainEye/resize/resize_image $temp`
+done
+
